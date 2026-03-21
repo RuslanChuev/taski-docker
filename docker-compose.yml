@@ -1,0 +1,38 @@
+# Файл docker-compose.yml
+volumes:
+  pg_data:
+  # Новый volume — для статических файлов
+  static:
+
+services:
+  db:
+    image: postgres:13.10
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+  backend:
+    build: ./backend/
+    env_file: .env
+    depends_on:
+      - db
+    volumes:
+      - static:/backend_static      
+  frontend:
+    build: ./frontend/
+    env_file: .env
+    volumes:
+      - static:/frontend_static/  # Связываем папку в контейнере с volume
+    command: >
+      sh -c "cp -r /app/build/. /frontend_static/ && echo 'Copy complete'"
+# Добавляем новый контейнер: gateway
+  gateway:
+    # Сбилдить и запустить образ, 
+    # описанный в Dockerfile в папке gateway
+    build: ./gateway/
+    # А тут подключаем volume со статикой к gateway
+    volumes:
+      - static:/staticfiles    
+    ports:
+      - 8000:80
+    depends_on:
+      - backend
