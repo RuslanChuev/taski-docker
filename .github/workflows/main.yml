@@ -201,6 +201,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy
     steps:
+    - name: Get current time
+      id: date
+      # Устанавливаем часовой пояс и сохраняем время в спец. переменную GitHub
+      run: |
+        export TZ=Europe/Moscow
+        echo "time=$(date +'%H:%M:%S')" >> $GITHUB_OUTPUT    
     - name: Send message
       uses: appleboy/telegram-action@master
       with:
@@ -209,6 +215,6 @@ jobs:
         message: |
           🚀 Workflow: ${{ github.workflow }}
           ✅ Статус: Успешно!
-          🕒 Время: $(date +'%H:%M:%S')
+          🕒 Время: ${{ steps.date.outputs.time }} (МСК)
           👤 Автор: ${{ github.actor }}
           🔗 Ссылка: https://github.com{{ github.repository }}/actions/runs/${{ github.run_id }}
