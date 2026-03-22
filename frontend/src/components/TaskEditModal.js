@@ -39,7 +39,7 @@ const TaskEditModal = ({ taskData, toggle, onSave }) => {
               name="title"
               value={item.title}
               onChange={handleChange}
-              placeholder="Enter Task Title (RCh_2)"
+              placeholder="Enter Task Title (RCh_3)"
             />
           </FormGroup>
           <FormGroup>
@@ -50,7 +50,7 @@ const TaskEditModal = ({ taskData, toggle, onSave }) => {
               name="description"
               value={item.description}
               onChange={handleChange}
-              placeholder="Enter Task description (RCh_2)"
+              placeholder="Enter Task description (RCh_3)"
             />
           </FormGroup>
           <FormGroup check>
